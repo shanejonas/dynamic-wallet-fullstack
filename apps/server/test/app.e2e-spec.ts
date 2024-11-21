@@ -30,6 +30,7 @@ describe('AppController (e2e)', () => {
   it('call myMethod)', () => {
     return request(adapter.getInstance())
       .post('/rpc/v1')
+      .set('Authorization', 'Bearer 123')
       .send({
         id: 1,
         method: 'test.myMethod',

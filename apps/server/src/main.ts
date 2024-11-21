@@ -4,6 +4,7 @@ import { JsonRpcServer } from 'openrpc-nestjs-json-rpc';
 import document from 'openrpc-nestjs-json-rpc/dist/rpcdiscover/DocumentBuilder';
 
 export async function bootstrap() {
+  await NestFactory.createMicroservice(AppModule, {});
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   const adapter = app.getHttpAdapter();
