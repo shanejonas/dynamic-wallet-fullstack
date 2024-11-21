@@ -2,20 +2,11 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
   GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
   SquareTerminal,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
@@ -35,7 +26,7 @@ const data = {
       plan: "Enterprise",
     }, 
   ],
-  navMainTitle: "Platform",
+  navMainTitle: "Ready",
   navMain: [
     {
       title: "Playground",
@@ -63,7 +54,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={data.navMain} title={data.navMainTitle} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

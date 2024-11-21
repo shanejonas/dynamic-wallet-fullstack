@@ -1,4 +1,4 @@
-import { UserDto, userSchema } from './app.schema.user';
+import { UserDto, userSchema } from '@repo/schemas';
 import { RpcService } from 'openrpc-nestjs-json-rpc';
 import { ZodToOpenRPC } from 'openrpc-nestjs-json-rpc';
 import { AuthGuard } from './auth/auth.guard';

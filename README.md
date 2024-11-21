@@ -20,6 +20,10 @@ This includes the following packages/apps:
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
+## Authentication
+
+The server uses [Dynamic](https://dynamic.xyz/) to authenticate users. You need to set the `NEXT_PUBLIC_DYNAMIC_ENV_ID` environment variable to your own Dyanamic Environment ID. You can get your own environment ID by creating an account on [Dynamic](https://dynamic.xyz/). 
+
 ### Build
 
 To build all apps and packages, run the following command:

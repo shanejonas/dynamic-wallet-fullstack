@@ -6,7 +6,6 @@ import { JsonRpcServer } from 'openrpc-nestjs-json-rpc';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let adapter: HttpServer;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -15,7 +14,7 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     app.enableCors();
-    adapter = app.getHttpAdapter();
+    const adapter = app.getHttpAdapter();
     app.connectMicroservice({
       strategy: new JsonRpcServer({
         path: '/rpc/v1',
@@ -28,7 +27,7 @@ describe('AppController (e2e)', () => {
   });
 
   it('call myMethod)', () => {
-    return request(adapter.getInstance())
+    return request(app.getHttpServer())
       .post('/rpc/v1')
       .set('Authorization', 'Bearer 123')
       .send({

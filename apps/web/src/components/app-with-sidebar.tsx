@@ -1,3 +1,5 @@
+'use client';
+
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -13,8 +15,40 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { useState, useEffect, FormEvent } from "react";
+import { getClient, setAuthorizationHeader } from "@/lib/jsonrpc-cient-proxy";
+import { Client } from "@open-rpc/client-js";
+
+import Form, { IChangeEvent } from '@rjsf/core';
+import { RJSFSchema } from '@rjsf/utils';
+import validator from '@rjsf/validator-ajv8';
+import { zodToJsonSchema } from "zod-to-json-schema";
+import { UserDto, userSchema } from '@repo/schemas';
+
+const jsonSchema = zodToJsonSchema(userSchema, "userSchema");
+
+const log = (type) => console.log.bind(console, type);
 
 export default function Page() {
+  const [client, setClient] = useState<Client | null>(null);
+  const token = window.localStorage.getItem('dynamic_authentication_token');
+
+  useEffect(() => {
+    if (token) {
+      setAuthorizationHeader(token);
+      setClient(getClient());
+    }
+  }, [token])
+
+  const onSubmit = async (data: IChangeEvent<any, any, any>, event: FormEvent<any>) => {
+    try {
+      const result = await client?.request({method: 'test.myMethod', params: data.formData});
+      console.log('result', result);
+    } catch (error) {
+      console.error('error', error);
+    }
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -39,11 +73,15 @@ export default function Page() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
+            <Form
+              className="schema-form"
+              schema={jsonSchema as any}
+              validator={validator}
+              onChange={log('changed')}
+              onSubmit={onSubmit}
+              onError={log('errors')}
+              disabled={!client}
+            />
           <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
         </div>
       </SidebarInset>
