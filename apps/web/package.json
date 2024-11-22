@@ -10,9 +10,9 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@open-rpc/client-js": "^1.8.1",
     "@dynamic-labs/ethereum": "^3.8.0",
     "@dynamic-labs/sdk-react-core": "^3.8.0",
+    "@open-rpc/client-js": "^1.8.1",
     "@open-rpc/meta-schema": "^1.14.9",
     "@rjsf/core": "^5.22.4",
     "@rjsf/utils": "^5.22.4",
@@ -21,19 +21,20 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "next": "15.0.3",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "sass": "^1.81.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "^2.21.48"
+    "viem": "^2.21.48",
+    "web": "file:"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "@types/node": "^20",
     "@types/react": "18.3.1",
-    "@types/react-dom": "18.3.0",
+    "@types/react-dom": "18.3.1",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "typescript": "5.5.4"
