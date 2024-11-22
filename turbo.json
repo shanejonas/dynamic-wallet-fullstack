@@ -16,7 +16,7 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["SERVER_PORT", "DYNAMIC_ENV_ID"]
+      "env": ["SERVER_PORT", "NEXT_PUBLIC_DYNAMIC_ENV_ID"]
     },
     "test": {
       "dependsOn": ["^lint"]

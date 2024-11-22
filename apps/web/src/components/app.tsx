@@ -37,9 +37,7 @@ export default function App() {
 
   useEffect(() => {
     if (client) {
-      client.request({ method: "rpc.discover", params: [] }).then((res) => {
-        setOpenrpcDoc(res);
-      });
+      client.request({ method: "rpc.discover", params: [] }).then(setOpenrpcDoc);
     }
   }, [client]);
 
@@ -136,12 +134,12 @@ export default function App() {
           </>
         )}
         {result && (
-          <>
-            <h1>Result</h1>
-            <div className="flex-1">
-              <pre>{JSON.stringify(result, null, 2)}</pre>
-            </div>
-          </>
+          <div className="mt-8 border border-gray-200 bg-gray-50 p-4">
+            <h2 className="mb-3 text-md font-semibold text-gray-900">Result</h2>
+            <pre className="overflow-auto bg-white p-4">
+              {JSON.stringify(result, null, 2)}
+            </pre>
+          </div>
         )}
       </div>
     </>

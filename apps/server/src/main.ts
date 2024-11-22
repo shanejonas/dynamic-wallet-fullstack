@@ -13,7 +13,7 @@ export async function bootstrap() {
       path: '/rpc/v1',
       port: 8080,
       adapter,
-    } as any),
+    }),
   });
   document.setVersion('2.0.0');
 
