@@ -21,7 +21,7 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 ## Authentication
 
-The server and web app both use [Dynamic](https://dynamic.xyz/) to authenticate users. You need to set the `NEXT_PUBLIC_DYNAMIC_ENV_ID` environment variable to your own Dyanamic Environment ID. You can get your own environment ID by creating an account on [Dynamic](https://dynamic.xyz/). 
+The server and web app both use [Dynamic](https://dynamic.xyz/) to authenticate users. You need to set the `NEXT_PUBLIC_DYNAMIC_ENV_ID` environment variable to your own Dyanamic Environment ID. You can get your own environment ID by creating an account on [Dynamic](https://dynamic.xyz/) and going to Developers > SDK & API Keys.
 
 
 ### Develop
