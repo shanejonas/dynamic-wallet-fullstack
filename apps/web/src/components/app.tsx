@@ -88,6 +88,7 @@ export default function App() {
       return false;
     });
     setResult(null);
+    setError(null);
     setSelectedMethod(method && "name" in method ? method : null);
   };
 
@@ -97,6 +98,9 @@ export default function App() {
 
     return {
       type: "object",
+      required: params
+        .filter((param) => param.required)
+        .map((param) => param.name),
       properties: params.reduce(
         (acc, param) => ({
           ...acc,
@@ -163,7 +167,11 @@ export default function App() {
               disabled={!isLoggedIn}
               children={
                 <>
-                  <button type="submit" className="border w-auto p-2 mr-4">
+                  <button
+                    type="submit"
+                    className="border w-auto p-2 mr-4"
+                    disabled={!isLoggedIn}
+                  >
                     Submit
                   </button>
                   <button
@@ -192,7 +200,11 @@ export default function App() {
               <>
                 <pre className="overflow-auto bg-white p-4">
                   {JSON.stringify(
-                    { message: error.message, code: error.code, data: error.data },
+                    {
+                      message: error.message,
+                      code: error.code,
+                      data: error.data,
+                    },
                     null,
                     2
                   )}

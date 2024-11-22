@@ -7,7 +7,7 @@ export const getClient = () => {
 }
 
 export const setAuthorizationHeader = (header: string) => {
-    header = header.replace(/^["']|["']$/g, '');
+    // header = header.replace(/^["']|["']$/g, ''); // TODO: remove this
     client = new Client(new RequestManager([new HTTPTransport("http://localhost:8080/rpc/v1", {
         headers: {
             Authorization: "Bearer " + header,
