@@ -22,6 +22,7 @@ export class AuthGuard implements CanActivate {
       request.getMetadataByKey('Authorization'),
     );
 
+    // TODO: remove this before production
     if (token === '123') return true;
 
     if (!token) return false;

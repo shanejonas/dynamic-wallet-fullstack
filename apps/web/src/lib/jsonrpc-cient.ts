@@ -1,7 +1,6 @@
 import { RequestManager, HTTPTransport, Client } from "@open-rpc/client-js";
-let transport = new HTTPTransport("http://localhost:8545");
+let transport = new HTTPTransport("http://localhost:8080/rpc/v1");
 let client = new Client(new RequestManager([transport]));
-
 
 export const getClient = () => {
     return client;

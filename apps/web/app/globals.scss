@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+// this css hacks together react-jsonschema-form which uses bootstrap classes by default and tailwind css.
+// https://github.com/rjsf-team/react-jsonschema-form/issues/3199#issuecomment-1529863595
+
 .schema-form {
   /* Left side is not needed due to fieldset left margin */
   @apply mr-2;
 }
+
 /* Aka sections */
 .schema-form fieldset > legend {
   /* Display block doesn't work for some reason. Does not fill parent width which is still a div, not sure why */
