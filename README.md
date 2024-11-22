@@ -30,7 +30,25 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 The server and web app both use [Dynamic](https://dynamic.xyz/) to authenticate users. You need to set the `NEXT_PUBLIC_DYNAMIC_ENV_ID` environment variable to your own Dyanamic Environment ID to have both the server and the web app pick it up. You can get your own environment ID by creating an account on [Dynamic](https://dynamic.xyz/) and going to Developers > SDK & API Keys.
 
 
+## Sepolia Testnet
+
+This uses sepolia testnet. You can get testnet ETH from [here](https://cloud.google.com/application/web3/faucet/ethereum/sepolia) without any captchas or authorization. Heres an example of a tx sent from the this app: https://sepolia.etherscan.io/tx/0x759d9a5a93a99fdad603a6b37a68f874d07e24ea8feb5d26b557d859af2dff75
+
+
 ### Develop
+
+
+This repo uses NPM workspaces to manage dependencies.
+
+```
+npm install
+```
+
+Set the `NEXT_PUBLIC_DYNAMIC_ENV_ID` environment variable to your own Dyanamic Environment ID.
+
+```
+export NEXT_PUBLIC_DYNAMIC_ENV_ID=<your-dynamic-env-id>
+```
 
 To develop all apps and packages, run the following command:
 

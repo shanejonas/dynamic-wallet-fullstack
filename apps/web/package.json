@@ -10,6 +10,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@open-rpc/client-js": "^1.8.1",
     "@dynamic-labs/ethereum": "^3.8.0",
     "@dynamic-labs/sdk-react-core": "^3.8.0",
     "@open-rpc/meta-schema": "^1.14.9",
