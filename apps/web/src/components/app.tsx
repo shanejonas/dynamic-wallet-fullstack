@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getClient, setAuthorizationHeader } from "@/lib/jsonrpc-cient";
+import { getClient, setAuthorizationHeader } from "@/lib/jsonrpc-client";
 import { Client } from "@open-rpc/client-js";
 
 import Form, { IChangeEvent } from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
-import { DynamicWidget, useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
+import { DynamicWidget, useIsLoggedIn, getAuthToken } from "@dynamic-labs/sdk-react-core";
 import { ContentDescriptorObject, MethodObject, OpenrpcDocument, MethodOrReference } from "@open-rpc/meta-schema";
 
 export default function App() {
@@ -20,8 +20,7 @@ export default function App() {
   const isLoggedIn = useIsLoggedIn();
 
   useEffect(() => {
-    const t = window.localStorage.getItem("dynamic_authentication_token");
-    setToken(t);
+    setToken(getAuthToken() || null);
   }, [isLoggedIn]);
 
   useEffect(() => {
@@ -115,6 +114,7 @@ export default function App() {
           <>
             <Form
               className="schema-form"
+              // TODO: dont call this on every render
               schema={getCombinedSchema(
                 selectedMethod?.params as ContentDescriptorObject[]
               )}
