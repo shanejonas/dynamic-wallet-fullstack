@@ -6,8 +6,24 @@ import { Client } from "@open-rpc/client-js";
 
 import Form, { IChangeEvent } from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
-import { DynamicWidget, useIsLoggedIn, getAuthToken } from "@dynamic-labs/sdk-react-core";
-import { ContentDescriptorObject, MethodObject, OpenrpcDocument, MethodOrReference } from "@open-rpc/meta-schema";
+import {
+  DynamicWidget,
+  useIsLoggedIn,
+  getAuthToken,
+} from "@dynamic-labs/sdk-react-core";
+import {
+  ContentDescriptorObject,
+  MethodObject,
+  OpenrpcDocument,
+  MethodOrReference,
+} from "@open-rpc/meta-schema";
+
+enum RequestStatus {
+  IDLE = "idle",
+  LOADING = "loading",
+  SUCCESS = "success",
+  ERROR = "error",
+}
 
 export default function App() {
   const [client, setClient] = useState<Client | null>(null);
@@ -17,6 +33,12 @@ export default function App() {
   );
   const [token, setToken] = useState<string | null>(null);
   const [result, setResult] = useState<any | null>(null);
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>(
+    RequestStatus.IDLE
+  );
+  const [error, setError] = useState<
+    (Error & { code: number; data?: any }) | null
+  >(null);
   const isLoggedIn = useIsLoggedIn();
 
   useEffect(() => {
@@ -36,35 +58,37 @@ export default function App() {
 
   useEffect(() => {
     if (client) {
-      client.request({ method: "rpc.discover", params: [] }).then(setOpenrpcDoc);
+      client
+        .request({ method: "rpc.discover", params: [] })
+        .then(setOpenrpcDoc);
     }
   }, [client]);
 
-  const handleSubmit = async (
-    data: IChangeEvent<any, any, any>,
-  ) => {
+  const handleSubmit = async (data: IChangeEvent<any, any, any>) => {
     try {
+      setRequestStatus(RequestStatus.LOADING);
       const result = await client?.request({
         method: selectedMethod?.name || "",
         params: data.formData,
       });
+      setRequestStatus(RequestStatus.SUCCESS);
       setResult(result);
     } catch (error) {
+      setRequestStatus(RequestStatus.ERROR);
+      setError(error as Error & { code: number; data?: any });
       console.error("error", error);
     }
   };
 
   const handleMethodChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const method = openrpcDoc?.methods.find(
-      (m: MethodOrReference) => {
-        if ('name' in m) {
-          return m.name === e.target.value;
-        }
-        return false;
+    const method = openrpcDoc?.methods.find((m: MethodOrReference) => {
+      if ("name" in m) {
+        return m.name === e.target.value;
       }
-    );
+      return false;
+    });
     setResult(null);
-    setSelectedMethod(method && 'name' in method ? method : null);
+    setSelectedMethod(method && "name" in method ? method : null);
   };
 
   // Create a combined schema from all params to feed to react-jsonschema-form
@@ -83,6 +107,12 @@ export default function App() {
     };
   };
 
+  const handleClear = () => {
+    setResult(null);
+    setError(null);
+    setRequestStatus(RequestStatus.IDLE);
+  };
+
   return (
     <>
       <header className="flex h-16 items-center justify-between pl-4">
@@ -93,7 +123,7 @@ export default function App() {
         >
           <option value="">Select method</option>
           {openrpcDoc?.methods.map((method: MethodOrReference) => {
-            if ('name' in method) {
+            if ("name" in method) {
               return (
                 <option key={method.name} value={method.name}>
                   {method.name}
@@ -108,8 +138,15 @@ export default function App() {
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        {!selectedMethod && <div className="text-red-500">Please select a method from the dropdown to start interacting with the API</div>}
-        {!isLoggedIn && selectedMethod && <div className="text-red-500">Please login to use the form</div>}
+        {!selectedMethod && (
+          <div className="text-red-500">
+            Please select a method from the dropdown to start interacting with
+            the API
+          </div>
+        )}
+        {!isLoggedIn && selectedMethod && (
+          <div className="text-red-500">Please login to use the form</div>
+        )}
         {selectedMethod && (
           <>
             <Form
@@ -126,14 +163,45 @@ export default function App() {
               disabled={!isLoggedIn}
               children={
                 <>
-                  <button type="submit" className="border w-auto p-2 mr-4">Submit</button>
-                  <button type="button" className="border w-auto p-2" onClick={() => setResult(null)}>Clear</button>
+                  <button type="submit" className="border w-auto p-2 mr-4">
+                    Submit
+                  </button>
+                  <button
+                    type="button"
+                    className="border w-auto p-2"
+                    onClick={handleClear}
+                  >
+                    Clear
+                  </button>
                 </>
               }
             />
           </>
         )}
-        {result && (
+        {requestStatus === RequestStatus.LOADING && (
+          <div
+            className="animate-spin inline-block size-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
+            role="status"
+            aria-label="loading"
+          />
+        )}
+        {requestStatus === RequestStatus.ERROR && (
+          <div className="text-red-500">
+            <h2 className="mb-3 text-md font-semibold">Error</h2>
+            {error && (
+              <>
+                <pre className="overflow-auto bg-white p-4">
+                  {JSON.stringify(
+                    { message: error.message, code: error.code, data: error.data },
+                    null,
+                    2
+                  )}
+                </pre>
+              </>
+            )}
+          </div>
+        )}
+        {requestStatus === RequestStatus.SUCCESS && result && (
           <div className="mt-8 border border-gray-200 bg-gray-50 p-4">
             <h2 className="mb-3 text-md font-semibold text-gray-900">Result</h2>
             <pre className="overflow-auto bg-white p-4">

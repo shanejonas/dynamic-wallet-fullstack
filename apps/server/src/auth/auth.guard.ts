@@ -3,6 +3,38 @@ import { JsonRpcContext } from 'openrpc-nestjs-json-rpc';
 import { JwksClient } from 'jwks-rsa';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
+import { TypesafeKey } from 'openrpc-nestjs-json-rpc';
+
+interface JwtPayload {
+  alias: string;
+  aud: string;
+  iat: number;
+  exp: number;
+  iss: string;
+  sub: string;
+}
+
+export interface DynamicJwtPayload extends JwtPayload {
+  verified_credentials?: {
+    address: string;
+    chain: string;
+    id: string;
+    wallet_name: string;
+  }[];
+  email?: string;
+  environment_id?: string;
+  family_name?: string;
+  given_name?: string;
+  lists?: string[];
+  verified_account?: {
+    address?: string;
+    chain?: string;
+    id?: string;
+    wallet_name?: string;
+  };
+}
+
+export const UserInfoKey = new TypesafeKey<DynamicJwtPayload>('auth:userid');
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -34,7 +66,8 @@ export class AuthGuard implements CanActivate {
       });
       if (!user) return false;
 
-      request['user'] = user;
+      request.customData.set(UserInfoKey, user as DynamicJwtPayload);
+
       return true;
     } catch (error) {
       console.error(error);

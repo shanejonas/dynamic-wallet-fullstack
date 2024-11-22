@@ -6,6 +6,7 @@ import {
 } from 'openrpc-nestjs-json-rpc';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { ConfigModule } from '@nestjs/config';
     }),
   ],
   controllers: [AppController, RpcDiscoverController],
-  providers: [],
+  providers: [AppService],
 })
 export class AppModule {}
