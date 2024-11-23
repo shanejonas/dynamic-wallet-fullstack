@@ -26,9 +26,10 @@ jobs:
     - name: Build project
       run: |
         cd apps/web
-        NEXT_PUBLIC_DYNAMIC_ENV_ID=${{ vars.NEXT_PUBLIC_DYNAMIC_ENV_ID }} npm run build
+        npm run build
       env:
         NEXT_PUBLIC_DYNAMIC_ENV_ID: ${{ vars.NEXT_PUBLIC_DYNAMIC_ENV_ID }}
+        NEXT_PUBLIC_BACKEND_URL: ${{ vars.NEXT_PUBLIC_BACKEND_URL }}
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
