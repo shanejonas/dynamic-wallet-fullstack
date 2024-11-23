@@ -151,6 +151,11 @@ export default function App() {
         {!isLoggedIn && selectedMethod && (
           <div className="text-red-500">Please login to use the form</div>
         )}
+        {selectedMethod && selectedMethod.params.length === 0 && (
+          <div className="text-red-500">
+            No parameters for this method
+          </div>
+        )}
         {selectedMethod && (
           <>
             <Form

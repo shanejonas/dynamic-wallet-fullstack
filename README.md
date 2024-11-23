@@ -35,6 +35,19 @@ The server and web app both use [Dynamic](https://dynamic.xyz/) to authenticate 
 This uses sepolia testnet. You can get testnet ETH from [here](https://cloud.google.com/application/web3/faucet/ethereum/sepolia) without any captchas or authorization. Heres an example of a tx sent from the this app: https://sepolia.etherscan.io/tx/0x759d9a5a93a99fdad603a6b37a68f874d07e24ea8feb5d26b557d859af2dff75
 
 
+## TODO:
+
+- allow more than 1 account per user
+- no tests on frontend
+- no database, just in memory storage
+- no CI/CD setup
+- no rate limiting 
+- hardcoded to sepolia
+- ideally have a `switchChain` method to switch the users wallet to a different chain
+- could clean up error messages, possible that they leak sensitive information
+
+## Contributing
+
 ### Develop
 
 
